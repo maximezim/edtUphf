@@ -7,7 +7,8 @@ import 'package:edt/screens/login.dart';
 
 class Menu extends StatefulWidget {
   final bool isconnected;
-  const Menu({super.key, required this.isconnected});
+  final String title;
+  const Menu({super.key, required this.isconnected, required this.title});
 
   @override
   State<Menu> createState() => MenuState();
@@ -32,7 +33,7 @@ class MenuState extends State<Menu> {
         return false;
       },
       child: Scaffold(
-        appBar: const TopAppBar(title: "Test"),
+        appBar: TopAppBar(title: widget.title),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(10),
           child: Center(
@@ -40,7 +41,7 @@ class MenuState extends State<Menu> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // loop to create 5 cards
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < 6; i++)
                   Center(
                     child: Card(
                       child: SizedBox(
@@ -54,20 +55,6 @@ class MenuState extends State<Menu> {
             ),
           ),
         ),
-        // bottomNavigationBar: Navbar(
-        //   actif: 0,
-        //   // reaload: () {
-        //   //   Navigator.push(
-        //   //       context,
-        //   //       PageRouteBuilder(
-        //   //         pageBuilder: (context, animation, secondaryAnimation) =>
-        //   //             const Parametre(),
-        //   //         transitionDuration: const Duration(seconds: 0),
-        //   //       )).then((value) {
-        //   //     setState(() {});
-        //   //   });
-        //   // }
-        // )
         bottomNavigationBar:
             const DemoBottomAppBar(isElevated: true, isVisible: true),
       ),

@@ -3,7 +3,6 @@
 - Boutons Gauche et Droite
 - Login Page
   - [TextField](https://m3.material.io/components/text-fields/overview)
-- Deconnexion
 - Top Bar
   - [TopBar](https://m3.material.io/components/top-app-bar/overview)
 - Menu

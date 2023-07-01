@@ -41,6 +41,9 @@ class _MyAppState extends State<MyApp> {
             visualDensity: VisualDensity.adaptivePlatformDensity,
             scaffoldBackgroundColor: Colors.white,
             useMaterial3: true),
-        home: Menu(isconnected: _connected));
+        home: Menu(
+            isconnected: _connected,
+            title:
+                '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}'));
   }
 }

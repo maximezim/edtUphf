@@ -70,6 +70,8 @@ class _DatePickerState extends State<DatePicker> with RestorationMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _restorableDatePickerRouteFuture.present();
     });
-    return Menu(isconnected: Storage.connected);
+    return Menu(
+        isconnected: Storage.connected,
+        title: '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}');
   }
 }

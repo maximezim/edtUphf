@@ -92,7 +92,12 @@ class LoginState extends State<Login> {
                   Storage.storeLogin(edtLogin.text, edtPassword.text);
                   Storage.connected = true;
                   Storage.setConnected(Storage.connected);
-                  route(context, Menu(isconnected: Storage.connected));
+                  route(
+                      context,
+                      Menu(
+                          isconnected: Storage.connected,
+                          title:
+                              '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}'));
                 },
                 child: const Text('Se connecter'),
               ),

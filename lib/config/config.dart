@@ -34,3 +34,21 @@ class Storage {
     return (Storage.id, Storage.password);
   }
 }
+
+class Mois {
+  // liste des mois
+  static List<String> mois = [
+    "Janvier",
+    "Février",
+    "Mars",
+    "Avril",
+    "Mai",
+    "Juin",
+    "Juillet",
+    "Août",
+    "Septembre",
+    "Octobre",
+    "Novembre",
+    "Décembre"
+  ];
+}

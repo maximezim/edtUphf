@@ -38,7 +38,12 @@ class Navbar extends StatelessWidget {
       onDestinationSelected: (index) {
         switch (index) {
           case 0:
-            route(context, Menu(isconnected: Storage.connected));
+            route(
+                context,
+                Menu(
+                    isconnected: Storage.connected,
+                    title:
+                        '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}'));
             break;
           case 1:
             // route(context, const NouvellePartie());

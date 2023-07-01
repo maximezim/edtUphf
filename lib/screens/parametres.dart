@@ -22,7 +22,12 @@ class ParametresState extends State<Parametres> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
-          route(context, Menu(isconnected: Storage.connected));
+          route(
+              context,
+              Menu(
+                  isconnected: Storage.connected,
+                  title:
+                      '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}'));
           return false;
         },
         child: Scaffold(
