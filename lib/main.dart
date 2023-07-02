@@ -29,6 +29,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     _connected = Storage.isConnected();
     Storage.setConnected(_connected);
+    Date().selectedDate = DateTime.now();
     super.initState();
   }
 

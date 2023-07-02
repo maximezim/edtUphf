@@ -52,3 +52,7 @@ class Mois {
     "Décembre"
   ];
 }
+
+class Date {
+  late DateTime selectedDate;
+}
