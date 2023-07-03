@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
-            fontFamily: 'Poppins',
+            fontFamily: 'Montserrat',
             colorSchemeSeed: Colors.blue,
             visualDensity: VisualDensity.adaptivePlatformDensity,
             scaffoldBackgroundColor: Colors.white,
