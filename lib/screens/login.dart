@@ -2,6 +2,8 @@ import 'package:edt/screens/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:edt/config/fonctions.dart';
 import 'package:edt/config/config.dart';
+import 'package:edt/data/web/session.dart';
+import 'package:flutter_login/flutter_login.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -26,6 +28,21 @@ class LoginState extends State<Login> {
         duration: const Duration(seconds: 2),
       ),
     );
+  }
+
+  Future<String?> authUser(LoginData data) async {
+    String username = data.name;
+    String password = data.password;
+    try {
+      if (!await Session.instance.isLog(username, password)) {
+        return "Identifiant ou mot de passe incorrect";
+      }
+    } catch (e) {
+      return e.toString().replaceAll("Exception: ", "");
+    }
+    Storage.storeLogin(username, password);
+    Storage.setConnected(true);
+    return null;
   }
 
   @override
@@ -73,31 +90,26 @@ class LoginState extends State<Login> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // if (edtLogin.text != '' && edtPassword.text != '') {
-                  //   login(edtLogin.text, edtPassword.text).then((value) {
-                  //     if (value == true) {
-                  //       Navigator.pushReplacement(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => const DemoBottomAppBar(isElevated: true,isVisible: true),
-                  //         ),
-                  //       );
-                  //     } else {
-                  //       showSnackBar(context, 'Erreur de connexion');
-                  //     }
-                  //   });
-                  // } else {
-                  //   showSnackBar(context, 'Veuillez remplir tous les champs');
-                  // }
-                  Storage.storeLogin(edtLogin.text, edtPassword.text);
-                  Storage.connected = true;
-                  Storage.setConnected(Storage.connected);
-                  route(
-                      context,
-                      Menu(
-                          isconnected: Storage.connected,
-                          title:
-                              '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}'));
+                  if (edtLogin.text.isEmpty || edtPassword.text.isEmpty) {
+                    showSnackBar(context, "Veuillez remplir tous les champs");
+                    return;
+                  }
+                  authUser(LoginData(
+                    name: edtLogin.text,
+                    password: edtPassword.text,
+                  )).then((value) {
+                    if (value != null) {
+                      showSnackBar(context, value);
+                      edtPassword.clear();
+                      return;
+                    }
+                    route(
+                        context,
+                        Menu(
+                            isconnected: Storage.connected,
+                            title:
+                                '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}'));
+                  });
                 },
                 child: const Text('Se connecter'),
               ),
