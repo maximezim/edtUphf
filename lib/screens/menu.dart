@@ -43,8 +43,8 @@ class MenuState extends State<Menu> {
       },
       child: Scaffold(
         appBar: TopAppBar(date: selectedDate),
-        body: SingleChildScrollView(
-          // padding: const EdgeInsets.all(10),
+        body: Center(
+          // Center the content vertically and horizontally
           child: buildBody(),
         ),
         bottomNavigationBar: DemoBottomAppBar(
@@ -52,40 +52,42 @@ class MenuState extends State<Menu> {
           isVisible: true,
           onNextDay: onNextDay,
           onPreviousDay: onPreviousDay,
-          onDateSelected: (DateTime newDate) {
-            setState(() {
-              selectedDate = newDate;
-              schoolDay = DataManager.instance.getSpecificDay(selectedDate);
-            });
-          },
+          onDateSelected: onDateSelected,
         ),
       ),
     );
   }
 
-  FutureBuilder buildBody() {
+  Widget buildBody() {
     return FutureBuilder<SchoolDay>(
       future: schoolDay,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
+          return Text('Error: ${snapshot.error}');
         }
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return const LinearProgressIndicator();
+            // Place the loading indicator at the top of the screen
+            return Column(
+              children: [
+                const LinearProgressIndicator(),
+                Expanded(child: Container()), // Keeps the indicator at the top
+              ],
+            );
           case ConnectionState.done:
-            return ListView.builder(
-              itemCount: snapshot.data!.lessons.length,
-              itemBuilder: (context, index) {
-                return LessonTile(snapshot.data!.lessons[index]);
-              },
-            );
+            // Ensure there's data before trying to build the list
+            if (snapshot.data != null) {
+              return ListView.builder(
+                itemCount: snapshot.data!.lessons.length,
+                itemBuilder: (context, index) {
+                  return LessonTile(snapshot.data!.lessons[index]);
+                },
+              );
+            } else {
+              return const Text('No data available');
+            }
           default:
-            return Center(
-              child: Text('Erreur: ${snapshot.error}'),
-            );
+            return Text('State: ${snapshot.connectionState}');
         }
       },
     );
