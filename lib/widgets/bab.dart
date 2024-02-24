@@ -5,12 +5,14 @@ import 'package:edt/widgets/datepick.dart';
 class DemoBottomAppBar extends StatelessWidget {
   final void Function() onNextDay;
   final void Function() onPreviousDay;
+  final Function(DateTime) onDateSelected;
   const DemoBottomAppBar({
     super.key,
     required this.isElevated,
     required this.isVisible,
     required this.onNextDay,
     required this.onPreviousDay,
+    required this.onDateSelected,
   });
 
   final bool isElevated;
@@ -47,8 +49,6 @@ class DemoBottomAppBar extends StatelessWidget {
               tooltip: 'Choisir une date',
               child: const Icon(Icons.calendar_month),
               onPressed: () {
-                // Since we're in a StatelessWidget, we need to use context to find a way to call back to the parent widget
-                // This is a conceptual example. You'll need to adapt it to your app's architecture.
                 showDatePicker(
                   context: context,
                   initialDate: DateTime.now(),
@@ -56,9 +56,7 @@ class DemoBottomAppBar extends StatelessWidget {
                   lastDate: DateTime(DateTime.now().year + 1),
                 ).then((selectedDate) {
                   if (selectedDate != null) {
-                    // Assuming you have a way to communicate with the parent widget or a state management solution in place
-                    // For example, if using a callback provided to DemoBottomAppBar:
-                    // onDateSelected(selectedDate);
+                    onDateSelected(selectedDate); // Use the callback here
                   }
                 });
               },

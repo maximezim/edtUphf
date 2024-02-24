@@ -48,10 +48,17 @@ class MenuState extends State<Menu> {
           child: buildBody(),
         ),
         bottomNavigationBar: DemoBottomAppBar(
-            isElevated: true,
-            isVisible: true,
-            onNextDay: onNextDay,
-            onPreviousDay: onPreviousDay),
+          isElevated: true,
+          isVisible: true,
+          onNextDay: onNextDay,
+          onPreviousDay: onPreviousDay,
+          onDateSelected: (DateTime newDate) {
+            setState(() {
+              selectedDate = newDate;
+              schoolDay = DataManager.instance.getSpecificDay(selectedDate);
+            });
+          },
+        ),
       ),
     );
   }
@@ -94,6 +101,13 @@ class MenuState extends State<Menu> {
   void onPreviousDay() {
     setState(() {
       selectedDate = selectedDate.subtract(const Duration(days: 1));
+      schoolDay = DataManager.instance.getSpecificDay(selectedDate);
+    });
+  }
+
+  void onDateSelected(DateTime newSelectedDate) {
+    setState(() {
+      selectedDate = newSelectedDate;
       schoolDay = DataManager.instance.getSpecificDay(selectedDate);
     });
   }
