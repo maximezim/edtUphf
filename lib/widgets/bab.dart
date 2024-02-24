@@ -15,9 +15,9 @@ class DemoBottomAppBar extends StatelessWidget {
 
   final bool isElevated;
   final bool isVisible;
-  final DatePicker datePicker = const DatePicker(
-    restorationId: 'example_restoration_id',
-  );
+  // final DatePicker datePicker = const DatePicker(
+  //   restorationId: 'example_restoration_id',
+  // );
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +32,14 @@ class DemoBottomAppBar extends StatelessWidget {
               tooltip: 'Gauche',
               icon: const Icon(Icons.arrow_left),
               onPressed: () {
-                onPreviousDay;
+                onPreviousDay();
               },
             ),
             IconButton(
               tooltip: 'Droite',
               icon: const Icon(Icons.arrow_right),
               onPressed: () {
-                onNextDay;
+                onNextDay();
               },
             ),
             const Expanded(child: SizedBox()),
@@ -47,7 +47,20 @@ class DemoBottomAppBar extends StatelessWidget {
               tooltip: 'Choisir une date',
               child: const Icon(Icons.calendar_month),
               onPressed: () {
-                route(context, datePicker);
+                // Since we're in a StatelessWidget, we need to use context to find a way to call back to the parent widget
+                // This is a conceptual example. You'll need to adapt it to your app's architecture.
+                showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(DateTime.now().year - 1),
+                  lastDate: DateTime(DateTime.now().year + 1),
+                ).then((selectedDate) {
+                  if (selectedDate != null) {
+                    // Assuming you have a way to communicate with the parent widget or a state management solution in place
+                    // For example, if using a callback provided to DemoBottomAppBar:
+                    // onDateSelected(selectedDate);
+                  }
+                });
               },
             ),
           ],

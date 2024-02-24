@@ -4,9 +4,14 @@ import 'package:edt/screens/menu.dart';
 import '../config/config.dart';
 
 class DatePicker extends StatefulWidget {
-  const DatePicker({super.key, this.restorationId});
+  const DatePicker({
+    super.key,
+    this.restorationId,
+    required this.onDateSelected,
+  });
 
   final String? restorationId;
+  final Function(DateTime) onDateSelected;
 
   @override
   State<DatePicker> createState() => _DatePickerState();
@@ -60,9 +65,10 @@ class _DatePickerState extends State<DatePicker> with RestorationMixin {
 
   void _selectDate(DateTime? newSelectedDate) {
     if (newSelectedDate != null) {
-      Navigator.of(context).pop(newSelectedDate);
+      _selectedDate.value = newSelectedDate;
+      widget.onDateSelected(newSelectedDate);
+      Navigator.of(context).pop();
     }
-    _selectedDate.value = newSelectedDate ?? DateTime.now();
   }
 
   @override

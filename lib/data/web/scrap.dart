@@ -39,7 +39,7 @@ class Scrap {
     for (var match in matches) {
       lessons.add(
         Lecon(
-          nom: match.group(1),
+          titre: match.group(1),
           type: match.group(2),
           salle: match.group(3),
           prof: match.group(5),

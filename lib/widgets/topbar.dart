@@ -8,17 +8,19 @@ import '../screens/menu.dart';
 class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool shadowColor = false;
   final double scrolledUnderElevation = 3.0;
-  final String? title;
+  final DateTime date;
   const TopAppBar({
     super.key,
-    required this.title,
+    required this.date,
   });
 
   @override
   Widget build(BuildContext context) {
+    final String formattedDate = "${date.day} ${Mois.mois[date.month - 1]}";
+
     return AppBar(
       automaticallyImplyLeading: false,
-      title: Text(title!),
+      title: Text(formattedDate),
       scrolledUnderElevation: scrolledUnderElevation,
       shadowColor: shadowColor ? Theme.of(context).colorScheme.shadow : null,
       actions: <Widget>[

@@ -42,7 +42,7 @@ class MenuState extends State<Menu> {
         return false;
       },
       child: Scaffold(
-        appBar: TopAppBar(title: widget.title),
+        appBar: TopAppBar(date: selectedDate),
         body: SingleChildScrollView(
           // padding: const EdgeInsets.all(10),
           child: buildBody(),
@@ -87,14 +87,14 @@ class MenuState extends State<Menu> {
   void onNextDay() {
     setState(() {
       selectedDate = selectedDate.add(const Duration(days: 1));
-      schoolDay = DataManager.instance.getNextSchoolDay();
+      schoolDay = DataManager.instance.getSpecificDay(selectedDate);
     });
   }
 
   void onPreviousDay() {
     setState(() {
-      selectedDate = selectedDate.add(const Duration(days: -1));
-      schoolDay = DataManager.instance.getPreviousSchoolDay();
+      selectedDate = selectedDate.subtract(const Duration(days: 1));
+      schoolDay = DataManager.instance.getSpecificDay(selectedDate);
     });
   }
 }

@@ -1,7 +1,7 @@
 import 'package:edt/data/utils/datehelper.dart';
 
 class Lecon {
-  final String? nom;
+  final String? titre;
   final String? salle;
   final String? horaire;
   final String? prof;
@@ -10,7 +10,7 @@ class Lecon {
   DateTime? date;
 
   Lecon({
-    this.nom,
+    this.titre,
     this.salle,
     this.horaire,
     this.prof,
@@ -21,7 +21,7 @@ class Lecon {
 
   toMap() {
     return {
-      'titre': nom,
+      'titre': titre,
       'salle': salle,
       'horaire': horaire,
       'type': type,
@@ -33,7 +33,7 @@ class Lecon {
 
   factory Lecon.fromMap(Map<String, dynamic> map) {
     return Lecon(
-      nom: map['nom'],
+      titre: map['titre'],
       salle: map['salle'],
       horaire: map['horaire'],
       type: map['type'],

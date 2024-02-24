@@ -22,20 +22,25 @@ class DatabaseHelper {
       onCreate: (db, version) {
         return db.execute(
           """
-            CREATE TABLE Lecon(
-              nom VARCHAR(50),
-              type VARCHAR(10),
-              salle VARCHAR(20),
-              prof VARCHAR(50),
-              horaire VARCHAR(20),
-              date VARCHAR(30),
-              infos VARCHAR(100),
-              PRIMARY KEY(nom, type, salle, horaire, date)
-            )
-          """,
+        CREATE TABLE Lecon(
+          titre VARCHAR(50),
+          type VARCHAR(10),
+          salle VARCHAR(20),
+          prof VARCHAR(50),
+          horaire VARCHAR(20),
+          date VARCHAR(30),
+          infos VARCHAR(100),
+          PRIMARY KEY(titre, type, salle, horaire, date)
+        )
+        """,
         );
       },
-      version: 1,
+      onUpgrade: (Database db, int oldVersion, int newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute("ALTER TABLE Lecon ADD COLUMN titre VARCHAR(50)");
+        }
+      },
+      version: 2,
     );
   }
 
