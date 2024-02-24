@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     _connected = Storage.isConnected();
     Storage.setConnected(_connected);
-    Date().selectedDate = DateTime.now();
+    Storage.fetchLogin();
     super.initState();
   }
 
@@ -45,6 +45,8 @@ class _MyAppState extends State<MyApp> {
         home: Menu(
             isconnected: _connected,
             title:
-                '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}'));
+                '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}',
+            username: Storage.id,
+            password: Storage.password));
   }
 }

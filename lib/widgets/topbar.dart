@@ -4,7 +4,6 @@ import '../config/config.dart';
 import '../config/fonctions.dart';
 import '../screens/login.dart';
 import '../screens/menu.dart';
-import '../screens/testdata.dart';
 
 class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool shadowColor = false;
@@ -18,6 +17,7 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       title: Text(title!),
       scrolledUnderElevation: scrolledUnderElevation,
       shadowColor: shadowColor ? Theme.of(context).colorScheme.shadow : null,
@@ -31,7 +31,9 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Menu(
                     isconnected: Storage.connected,
                     title:
-                        '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}'));
+                        '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}',
+                    username: Storage.id,
+                    password: Storage.password));
           },
         ),
         PopupMenuButton(
@@ -56,14 +58,6 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
                 title: const Text('Me soutenir'),
                 onTap: () {
                   // TODO
-                },
-              )),
-              PopupMenuItem(
-                  child: ListTile(
-                leading: const Icon(Icons.info_outline),
-                title: const Text('Data'),
-                onTap: () {
-                  route(context, const TestData());
                 },
               )),
             ];

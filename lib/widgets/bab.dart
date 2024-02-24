@@ -3,10 +3,14 @@ import 'package:edt/config/fonctions.dart';
 import 'package:edt/widgets/datepick.dart';
 
 class DemoBottomAppBar extends StatelessWidget {
+  final void Function() onNextDay;
+  final void Function() onPreviousDay;
   const DemoBottomAppBar({
     super.key,
     required this.isElevated,
     required this.isVisible,
+    required this.onNextDay,
+    required this.onPreviousDay,
   });
 
   final bool isElevated;
@@ -28,21 +32,16 @@ class DemoBottomAppBar extends StatelessWidget {
               tooltip: 'Gauche',
               icon: const Icon(Icons.arrow_left),
               onPressed: () {
-                // datePicker.previousPage();
+                onPreviousDay;
               },
             ),
             IconButton(
               tooltip: 'Droite',
               icon: const Icon(Icons.arrow_right),
               onPressed: () {
-                // datePicker.nextPage();
+                onNextDay;
               },
             ),
-            // IconButton(
-            //   tooltip: 'Favorite',
-            //   icon: const Icon(Icons.favorite),
-            //   onPressed: () {},
-            // ),
             const Expanded(child: SizedBox()),
             FloatingActionButton(
               tooltip: 'Choisir une date',

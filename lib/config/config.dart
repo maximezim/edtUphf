@@ -28,6 +28,8 @@ class Storage {
   static Object fetchLogin() {
     String? id = GetStorage().read("id");
     String? password = GetStorage().read("password");
+    Storage.id = id ?? "";
+    Storage.password = password ?? "";
     if (id == null || password == null) {
       return false;
     }
@@ -51,8 +53,4 @@ class Mois {
     "Novembre",
     "Décembre"
   ];
-}
-
-class Date {
-  late DateTime selectedDate;
 }

@@ -72,6 +72,8 @@ class _DatePickerState extends State<DatePicker> with RestorationMixin {
     });
     return Menu(
         isconnected: Storage.connected,
-        title: '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}');
+        title: '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}',
+        username: Storage.id,
+        password: Storage.password);
   }
 }

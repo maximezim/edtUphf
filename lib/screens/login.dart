@@ -108,7 +108,9 @@ class LoginState extends State<Login> {
                         Menu(
                             isconnected: Storage.connected,
                             title:
-                                '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}'));
+                                '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}',
+                            username: Storage.id,
+                            password: Storage.password));
                   });
                 },
                 child: const Text('Se connecter'),
