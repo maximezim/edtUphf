@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../config/config.dart';
 import '../config/fonctions.dart';
@@ -9,9 +10,12 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool shadowColor = false;
   final double scrolledUnderElevation = 3.0;
   final DateTime date;
+  final Function(bool) onThemeToggle;
+
   const TopAppBar({
     super.key,
     required this.date,
+    required this.onThemeToggle,
   });
 
   @override
@@ -35,7 +39,8 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
                     title:
                         '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}',
                     username: Storage.id,
-                    password: Storage.password));
+                    password: Storage.password,
+                    onThemeToggle: onThemeToggle));
           },
         ),
         PopupMenuButton(
@@ -62,6 +67,27 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
               //     // TODO
               //   },
               // )),
+              PopupMenuItem(
+                child: StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    bool isDarkMode = GetStorage().read('isDarkMode') ?? false;
+                    return ListTile(
+                      leading: const Icon(Icons.brightness_4),
+                      title: const Text('Dark Mode'),
+                      trailing: Switch(
+                        value: isDarkMode,
+                        onChanged: (value) {
+                          setState(() {
+                            GetStorage().write('isDarkMode', value);
+                            isDarkMode = value;
+                            onThemeToggle(value);
+                          });
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
             ];
           },
           shape: RoundedRectangleBorder(

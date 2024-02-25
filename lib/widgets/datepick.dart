@@ -80,6 +80,7 @@ class _DatePickerState extends State<DatePicker> with RestorationMixin {
         isconnected: Storage.connected,
         title: '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}',
         username: Storage.id,
-        password: Storage.password);
+        password: Storage.password,
+        onThemeToggle: (bool isOn) {});
   }
 }

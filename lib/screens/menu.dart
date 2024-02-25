@@ -12,12 +12,15 @@ class Menu extends StatefulWidget {
   final String password;
   final bool isconnected;
   final String title;
-  const Menu(
-      {super.key,
-      required this.isconnected,
-      required this.title,
-      required this.username,
-      required this.password});
+  final Function(bool) onThemeToggle;
+  const Menu({
+    super.key,
+    required this.isconnected,
+    required this.title,
+    required this.username,
+    required this.password,
+    required this.onThemeToggle,
+  });
 
   @override
   State<Menu> createState() => MenuState();
@@ -77,7 +80,8 @@ class MenuState extends State<Menu> {
         return false;
       },
       child: Scaffold(
-        appBar: TopAppBar(date: selectedDate),
+        appBar:
+            TopAppBar(date: selectedDate, onThemeToggle: widget.onThemeToggle),
         body: Center(
           // Center the content vertically and horizontally
           child: buildBody(),

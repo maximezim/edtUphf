@@ -25,28 +25,36 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late bool _connected;
+  bool _isDarkMode = false;
   @override
   void initState() {
     _connected = Storage.isConnected();
     Storage.setConnected(_connected);
     Storage.fetchLogin();
+    _isDarkMode = GetStorage().read('isDarkMode') ?? false;
+
     super.initState();
+  }
+
+  void toggleTheme(bool isOn) {
+    setState(() {
+      _isDarkMode = isOn;
+      GetStorage().write('isDarkMode', isOn);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(
-            fontFamily: 'Montserrat',
-            colorSchemeSeed: Colors.blue,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            scaffoldBackgroundColor: Colors.white,
-            useMaterial3: true),
+        theme: _isDarkMode
+            ? ThemeData.dark().copyWith(useMaterial3: true)
+            : ThemeData.light().copyWith(useMaterial3: true),
         home: Menu(
             isconnected: _connected,
             title:
                 '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}',
             username: Storage.id,
-            password: Storage.password));
+            password: Storage.password,
+            onThemeToggle: toggleTheme));
   }
 }

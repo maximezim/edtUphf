@@ -43,6 +43,7 @@ class _LoginState extends State<Login> {
                 '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}',
             username: Storage.id,
             password: Storage.password,
+            onThemeToggle: (bool isOn) {},
           ),
         ));
       }
