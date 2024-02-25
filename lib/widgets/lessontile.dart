@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:edt/data/models/lecon.dart';
-import 'package:path/path.dart';
 
 class LessonTile extends StatelessWidget {
   final Lecon lesson;

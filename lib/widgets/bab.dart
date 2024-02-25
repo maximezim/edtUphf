@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:edt/config/fonctions.dart';
-import 'package:edt/widgets/datepick.dart';
 
 class DemoBottomAppBar extends StatelessWidget {
   final void Function() onNextDay;
