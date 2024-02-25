@@ -1,27 +1,56 @@
 import 'package:edt/screens/menu.dart';
 import 'package:flutter/material.dart';
-import 'package:edt/config/fonctions.dart';
 import 'package:edt/config/config.dart';
 import 'package:edt/data/web/session.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  const Login({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => LoginState();
+  State<Login> createState() => _LoginState();
 }
 
-class LoginState extends State<Login> {
-  final TextEditingController edtLogin = TextEditingController();
-  final TextEditingController edtPassword = TextEditingController();
+class _LoginState extends State<Login> {
+  final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
-  void showSnackBar(BuildContext context, String message) {
+  Future<void> _login() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      setState(() => _isLoading = true);
+      final result = await authUser(LoginData(
+        name: _usernameController.text,
+        password: _passwordController.text,
+      ));
+      if (result != null) {
+        showSnackBar(result);
+        _passwordController.clear();
+      } else {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (_) => Menu(
+            isconnected: Storage.connected,
+            title:
+                '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}',
+            username: Storage.id,
+            password: Storage.password,
+          ),
+        ));
+      }
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -31,91 +60,80 @@ class LoginState extends State<Login> {
   }
 
   Future<String?> authUser(LoginData data) async {
-    String username = data.name;
-    String password = data.password;
     try {
-      if (!await Session.instance.isLog(username, password)) {
+      if (!await Session.instance.isLog(data.name, data.password)) {
         return "Identifiant ou mot de passe incorrect";
       }
+      Storage.storeLogin(data.name, data.password);
+      Storage.setConnected(true);
+      return null;
     } catch (e) {
       return e.toString().replaceAll("Exception: ", "");
     }
-    Storage.storeLogin(username, password);
-    Storage.setConnected(true);
-    return null;
+  }
+
+  _launchURL() async {
+    final Uri url = Uri.parse('https://sesame.uphf.fr/identifiants.html');
+    if (!await launchUrl(url)) {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
-      child: Scaffold(
-        // two text fields
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'Connexion',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Image.asset(
+                  'lib/screens/UPHF_logo.png', // Path to your logo image
+                  width: 100, // Width of the logo
+                  height: 100, // Height of the logo
+                  fit: BoxFit.contain, // Use this to prevent image distortion
                 ),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: TextField(
-                  controller: edtLogin,
+                const SizedBox(height: 48),
+                TextFormField(
+                  controller: _usernameController,
                   decoration: const InputDecoration(
+                    labelText: 'Username',
                     border: OutlineInputBorder(),
-                    labelText: 'Login',
                   ),
+                  validator: (value) => (value == null || value.isEmpty)
+                      ? 'Please enter your username'
+                      : null,
                 ),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: TextField(
-                  controller: edtPassword,
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(
+                    labelText: 'Password',
                     border: OutlineInputBorder(),
-                    labelText: 'Mot de passe',
                   ),
+                  validator: (value) => (value == null || value.isEmpty)
+                      ? 'Please enter your password'
+                      : null,
                 ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (edtLogin.text.isEmpty || edtPassword.text.isEmpty) {
-                    showSnackBar(context, "Veuillez remplir tous les champs");
-                    return;
-                  }
-                  authUser(LoginData(
-                    name: edtLogin.text,
-                    password: edtPassword.text,
-                  )).then((value) {
-                    if (value != null) {
-                      showSnackBar(context, value);
-                      edtPassword.clear();
-                      return;
-                    }
-                    route(
-                        context,
-                        Menu(
-                            isconnected: Storage.connected,
-                            title:
-                                '${DateTime.now().day} ${Mois.mois[DateTime.now().month - 1]}',
-                            username: Storage.id,
-                            password: Storage.password));
-                  });
-                },
-                child: const Text('Se connecter'),
-              ),
-            ],
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: _isLoading ? null : _login,
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text('Connexion'),
+                ),
+                const SizedBox(height: 16),
+                TextButton(
+                  onPressed: _launchURL,
+                  child: const Text('Mot de passe oublié?'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
