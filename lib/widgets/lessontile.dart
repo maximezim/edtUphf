@@ -6,22 +6,23 @@ class LessonTile extends StatelessWidget {
 
   const LessonTile(this.lesson, {Key? key}) : super(key: key);
 
-  Color? getLessonTileColor(String type) {
+  Color? getLessonTileColor(BuildContext context, String type) {
+    var colorScheme = Theme.of(context).colorScheme;
     switch (type) {
       case 'CM':
-        return Colors.teal[200];
+        return colorScheme.primaryContainer; // Adjusted for Material 3
       case 'TD':
-        return Colors.deepOrange[200];
+        return colorScheme.secondaryContainer; // Adjusted for Material 3
       case 'TP':
-        return Colors.lightGreen[200];
+        return colorScheme.tertiaryContainer; // Adjusted for Material 3
       default:
-        return Colors.grey[200];
+        return colorScheme.background; // Adjusted for Material 3
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = getLessonTileColor(lesson.type ?? "");
+    final backgroundColor = getLessonTileColor(context, lesson.type ?? "");
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

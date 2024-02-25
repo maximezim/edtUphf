@@ -47,8 +47,19 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: _isDarkMode
-            ? ThemeData.dark().copyWith(useMaterial3: true)
-            : ThemeData.light().copyWith(useMaterial3: true),
+            ? ThemeData(
+                useMaterial3: true,
+                colorScheme: ColorScheme.fromSeed(
+                  brightness: Brightness.dark, // <-- the only line added
+                  seedColor: const Color.fromARGB(255, 88, 120, 140),
+                ),
+              )
+            : ThemeData(
+                useMaterial3: true,
+                colorScheme: ColorScheme.fromSeed(
+                    seedColor: const Color.fromARGB(255, 88, 120, 140),
+                    brightness: Brightness.light),
+              ),
         home: Menu(
             isconnected: _connected,
             title:
