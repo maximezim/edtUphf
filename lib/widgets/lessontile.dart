@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:edt/data/models/lecon.dart';
+import 'package:path/path.dart';
 
 class LessonTile extends StatelessWidget {
   final Lecon lesson;
 
   const LessonTile(this.lesson, {Key? key}) : super(key: key);
 
+  Color? getLessonTileColor(String type) {
+    switch (type) {
+      case 'CM':
+        return Colors.teal[200];
+      case 'TD':
+        return Colors.deepOrange[200];
+      case 'TP':
+        return Colors.lightGreen[200];
+      default:
+        return Colors.grey[200];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = getLessonTileColor(lesson.type ?? "");
     return Card(
       elevation: 4,
-      margin: const EdgeInsets.symmetric(
-          horizontal: 8, vertical: 4), // Add margin for spacing between cards
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      color: backgroundColor, // Add margin for spacing between cards
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
               10)), // Smaller borderRadius for subtler curves

@@ -54,14 +54,14 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                 ),
               ),
-              PopupMenuItem(
-                  child: ListTile(
-                leading: const Icon(Icons.monetization_on),
-                title: const Text('Me soutenir'),
-                onTap: () {
-                  // TODO
-                },
-              )),
+              // PopupMenuItem(
+              //     child: ListTile(
+              //   leading: const Icon(Icons.monetization_on),
+              //   title: const Text('Me soutenir'),
+              //   onTap: () {
+              //     // TODO
+              //   },
+              // )),
             ];
           },
           shape: RoundedRectangleBorder(
