@@ -46,15 +46,16 @@ class DatabaseHelper {
 
   Future<void> insertSchoolDay(SchoolDay schoolDay, DateTime date) async {
     final db = await database;
-    await deleteSchoolDay(date);
-    for (final lesson in schoolDay.lessons) {
-      lesson.date = date;
-      await db.insert(
-        'Lecon',
-        lesson.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    }
+    await db.transaction((txn) async {
+      await txn.delete('Lecon',
+          where: 'date = ?',
+          whereArgs: [DateHelper.convertDateTimeToSQLFormat(date)]);
+      for (final lesson in schoolDay.lessons) {
+        lesson.date = date;
+        await txn.insert('Lecon', lesson.toMap(),
+            conflictAlgorithm: ConflictAlgorithm.replace);
+      }
+    });
   }
 
   Future<void> deleteSchoolDay(DateTime date) async {
