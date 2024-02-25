@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:edt/config/fonctions.dart';
+import 'package:edt/widgets/datepick.dart';
 
 class DemoBottomAppBar extends StatelessWidget {
   final void Function() onNextDay;
@@ -15,9 +17,6 @@ class DemoBottomAppBar extends StatelessWidget {
 
   final bool isElevated;
   final bool isVisible;
-  // final DatePicker datePicker = const DatePicker(
-  //   restorationId: 'example_restoration_id',
-  // );
 
   @override
   Widget build(BuildContext context) {
