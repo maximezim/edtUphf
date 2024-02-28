@@ -32,42 +32,8 @@ class MenuState extends State<Menu> {
   @override
   void initState() {
     super.initState();
-    // Load data from the database first
-    loadDataFromDatabase();
-  }
-
-  void updateDataFromServer() async {
-    try {
-      SchoolDay updatedData = await DataManager.instance
-          .getSchoolDay(widget.username, widget.password);
-      if (mounted) {
-        setState(() {
-          schoolDay = Future.value(updatedData);
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          schoolDay = Future.error(e);
-        });
-      }
-    }
-  }
-
-  void loadDataFromDatabase() async {
-    try {
-      // Attempt to load the school day from the database
-      SchoolDay initialData =
-          await DatabaseHelper.instance.getSchoolDay(selectedDate);
-      setState(() {
-        schoolDay = Future.value(initialData);
-      });
-      // Then check for updates from the server
-      updateDataFromServer();
-    } catch (e) {
-      // If there's an error loading from the database, attempt to load from the server directly
-      updateDataFromServer();
-    }
+    schoolDay =
+        DataManager.instance.getSchoolDay(widget.username, widget.password);
   }
 
   @override
